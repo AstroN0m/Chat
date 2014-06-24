@@ -45,15 +45,15 @@ function loadUser(session, callback) {
 module.exports = function(server) {
   var io = require('socket.io').listen(server);
   io.set('origins', 'localhost:*');
-  io.set('logger', log);
+  //io.set('logger', log);
 
-  io.set('authorization', function(handshake, callback) {
+/*io.set('authorization', function(handshake, callback) {
     async.waterfall([
       function(callback) {
         // сделать handshakeData.cookies - объектом с cookie
         handshake.cookies = cookie.parse(handshake.headers.cookie || '');
-        var sidCookie = handshake.cookies[config.get('session:key')];
-        var sid = connect.utils.parseSignedCookie(sidCookie, config.get('session:secret'));
+        var sidCookie = handshake.cookies[config.get('session:name')];
+        var sid = connect.utils.parseSignedCookies(sidCookie, config.get('session:secret'));
 
         loadSession(sid, callback);
       },
@@ -113,11 +113,11 @@ module.exports = function(server) {
         
     });
 
-  });
+  });*/
 
   io.sockets.on('connection', function(socket) {
 
-    var username = socket.handshake.user.get('username');
+    var username = 'user'//socket.handshake.user.get('username');
 
     socket.broadcast.emit('join', username);
 

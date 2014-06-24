@@ -15,15 +15,17 @@ app.engine('ejs', require('ejs-locals'));
 app.set('views', __dirname + '/template');
 app.set('view engine', 'ejs');
 
-app.use(bodyParser());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-app.use(cookieParser());
+app.use(cookieParser(config.get('session:secret')));
 
 var sessionStore = require('lib/sessionStore');
 
 app.use(session({
+    name: config.get('session:name'),
     secret: config.get('session:secret'),
-    key: config.get('session:key'),
     cookie: config.get('session:cookie'),
     store: sessionStore
 }));
@@ -60,5 +62,5 @@ server.listen(config.get('port'), function(){
     log.info('Express server listening on port ' + config.get('port'));
 });
 
-var io = require('./socket')(server);
+var io = require('socket')(server);
 app.set('io', io);

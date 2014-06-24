@@ -1,4 +1,7 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var http = require('http');
 var path = require('path');
 var config = require('config');
@@ -12,21 +15,13 @@ app.engine('ejs', require('ejs-locals'));
 app.set('views', __dirname + '/template');
 app.set('view engine', 'ejs');
 
-app.use(express.favicon());
+app.use(bodyParser());
 
-if (app.get('env') == 'development') {
-    app.use(express.logger('dev'));
-} else {
-    app.use(express.logger('default'));
-}
-
-app.use(express.bodyParser());
-
-app.use(express.cookieParser());
+app.use(cookieParser());
 
 var sessionStore = require('lib/sessionStore');
 
-app.use(express.session({
+app.use(session({
     secret: config.get('session:secret'),
     key: config.get('session:key'),
     cookie: config.get('session:cookie'),
@@ -35,8 +30,6 @@ app.use(express.session({
 
 app.use(require('middleware/sendHttpError'));
 app.use(require('middleware/loadUser'));
-
-app.use(app.router);
 
 require('routes')(app);
 

@@ -1,11 +1,11 @@
-var log = require('lib/log')(module);
-var config = require('config');
+var log = require('../lib/log')(module);
+var config = require('../config');
 var connect = require('connect'); // npm i connect
 var async = require('async');
 var cookie = require('cookie');   // npm i cookie
-var sessionStore = require('lib/sessionStore');
-var HttpError = require('error').HttpError;
-var User = require('models/user').User;
+var sessionStore = require('../lib/sessionStore');
+var HttpError = require('../error').HttpError;
+var User = require('../models/user').User;
 
 function loadSession(sid, callback) {
 

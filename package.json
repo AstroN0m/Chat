@@ -7,6 +7,18 @@
     },
     "dependencies": {
         "express": "4.2.0",
-        "ejs": "*"
+        "ejs": "*",
+        "body-parser": "",
+        "cookie-parser": "",
+        "express-session": "",
+        "nconf": "",
+        "winston": "",
+        "mongoose": "",
+        "ejs-locals": "",
+        "connect-mongo": "",
+        "async": "",
+        "connect": "",
+        "cookie": "",
+        "socket.io": ""
     }
 }

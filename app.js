@@ -4,10 +4,10 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var http = require('http');
 var path = require('path');
-var config = require('config');
-var log = require('lib/log')(module);
-var mongoose = require('lib/mongoose');
-var HttpError = require('error').HttpError;
+var config = require('./config');
+var log = require('./lib/log')(module);
+var mongoose = require('./lib/mongoose');
+var HttpError = require('./error').HttpError;
 
 var app = express();
 
@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(cookieParser(config.get('session:secret')));
 
-var sessionStore = require('lib/sessionStore');
+var sessionStore = require('./lib/sessionStore');
 
 app.use(session({
     name: config.get('session:name'),
@@ -30,10 +30,10 @@ app.use(session({
     store: sessionStore
 }));
 
-app.use(require('middleware/sendHttpError'));
-app.use(require('middleware/loadUser'));
+app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/loadUser'));
 
-require('routes')(app);
+require('./routes')(app);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -62,5 +62,5 @@ server.listen(config.get('port'), function(){
     log.info('Express server listening on port ' + config.get('port'));
 });
 
-var io = require('socket')(server);
+var io = require('./socket')(server);
 app.set('io', io);

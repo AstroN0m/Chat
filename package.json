@@ -17,9 +17,9 @@
         "ejs-locals": "",
         "connect-mongo": "",
         "async": "",
-        "connect": "",
+        "connect": "2.9.0",
         "cookie": "",
-        "socket.io": "",
+        "socket.io": "0.9.16",
         "config": "",
         "supervisor": ""
     }

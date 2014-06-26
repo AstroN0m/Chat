@@ -19,6 +19,8 @@
         "async": "",
         "connect": "",
         "cookie": "",
-        "socket.io": ""
+        "socket.io": "",
+        "config": "",
+        "supervisor": ""
     }
 }

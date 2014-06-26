@@ -11,6 +11,9 @@ var schema = new Schema({
     unique: true,
     required: true
   },
+  color: {
+    type: String
+  },
   hashedPassword: {
     type: String,
     required: true
@@ -43,28 +46,41 @@ schema.methods.checkPassword = function(password) {
 };
 
 schema.statics.authorize = function(username, password, callback) {
-  var User = this;
+    var User = this;
 
-  async.waterfall([
-    function(callback) {
-      User.findOne({username: username}, callback);
-    },
-    function(user, callback) {
-      if (user) {
-        if (user.checkPassword(password)) {
-          callback(null, user);
-        } else {
-          callback(new AuthError("Пароль неверен"));
+    async.waterfall([
+        function (callback) {
+            User.findOne({username: username}, callback);
+        },
+        function (user, callback) {
+            if (user && user.checkPassword(password)) {
+                callback(null, user);
+            } else {
+                callback(new AuthError("Login or password is incorrect"));
+            }
         }
-      } else {
-        var user = new User({username: username, password: password});
-        user.save(function(err) {
-          if (err) return callback(err);
-          callback(null, user);
-        });
-      }
-    }
-  ], callback);
+    ], callback);
+};
+
+schema.statics.signup = function(username, password, color, callback) {
+    var User = this;
+
+    async.waterfall([
+        function (callback) {
+            User.findOne({username: username}, callback);
+        },
+        function (user, callback) {
+            if (user) {
+                callback(new AuthError("User already exists"));
+            } else {
+                var user = new User({username: username, password: password, color: color});
+                user.save(function (err) {
+                    if (err) return callback(err);
+                    callback(null, user);
+                });
+            }
+        }
+    ], callback);
 };
 
 exports.User = mongoose.model('User', schema);

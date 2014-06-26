@@ -1,7 +1,7 @@
 <% layout('layout/page') -%>
-<% block('title', "Регистрация и вход") -%>
+<% block('title', "Вход") -%>
 
-<p>Введите имя пользователя и пароль. Если такого пользователя нет - он будет создан.</p>
+<p>Введите имя пользователя и пароль.</p>
 
 <form class="form-horizontal login-form" name="login-form">
   <div class="form-group">
@@ -27,30 +27,7 @@
 </form>
 
 <script>
-  $(document.forms['login-form']).on('submit', function() {
-    var form = $(this);
-
-    $('.error', form).html('');
-    $(":submit", form).button("loading");
-
-    $.ajax({
-      url: "/login",
-      method: "POST",
-      data: form.serialize(),
-      complete: function() {
-        $(":submit", form).button("reset");
-      },
-      statusCode: {
-        200: function() {
-          form.html("Вы вошли в сайт").addClass('alert-success');
-          window.location.href = "/chat";
-        },
-        403: function(jqXHR) {
-          var error = JSON.parse(jqXHR.responseText);
-          $('.error', form).html(error.message);
-        }
-      }
+    $(function() {
+        Chat.initializeLogin("/login", "You've entered to the chat");
     });
-    return false;
-  });
 </script>

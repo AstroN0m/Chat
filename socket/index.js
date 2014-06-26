@@ -47,13 +47,13 @@ module.exports = function(server) {
   io.set('origins', 'localhost:*');
   //io.set('logger', log);
 
-/*io.set('authorization', function(handshake, callback) {
+io.set('authorization', function(handshake, callback) {
     async.waterfall([
       function(callback) {
         // сделать handshakeData.cookies - объектом с cookie
         handshake.cookies = cookie.parse(handshake.headers.cookie || '');
         var sidCookie = handshake.cookies[config.get('session:name')];
-        var sid = connect.utils.parseSignedCookies(sidCookie, config.get('session:secret'));
+        var sid = connect.utils.parseSignedCookie(sidCookie, config.get('session:secret'));
 
         loadSession(sid, callback);
       },
@@ -113,16 +113,17 @@ module.exports = function(server) {
         
     });
 
-  });*/
+  });
 
   io.sockets.on('connection', function(socket) {
-
-    var username = 'user'//socket.handshake.user.get('username');
+    var user = socket.manager.handshaken[socket.id].user;
+    var username = user.get('username');
+    var color = user.get('color');
 
     socket.broadcast.emit('join', username);
 
     socket.on('message', function(text, cb) {
-      socket.broadcast.emit('message', username, text);
+      socket.broadcast.emit('message', username, color, text);
       cb && cb();
     });
 

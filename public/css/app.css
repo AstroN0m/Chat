@@ -1,0 +1,11 @@
+.nickname {
+    font-weight: bold;
+}
+
+.connected, .user-enter {
+    color: green;
+}
+
+.disconnected, .user-left {
+    color: red;
+}

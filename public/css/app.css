@@ -9,3 +9,7 @@
 .disconnected, .user-left {
     color: red;
 }
+
+.navbar-nav.navbar-right:last-child {
+	margin-right: 0px; /* why does bootstrap have -15px here?!*/
+}

@@ -1,5 +1,9 @@
 {
-  "port": 3000,
+  "port": "3000",
+  "origin": {
+    "url": "our_chat-c9-andrey_pavlov.c9.io",
+    "port": "*"
+  },
   "mongoose": {
     "uri": "mongodb://dbuser:dbpassword@ds061198.mongolab.com:61198/chat",
     "options": {

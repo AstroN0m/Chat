@@ -42,10 +42,10 @@ var Chat = {
                 printMessage(username, color, message);
             })
             .on('leave', function (username) {
-                printStatus(username + " left chat", 'user-left');
+                printStatus(username + ' left chat', 'user-left');
             })
             .on('join', function (username) {
-                printStatus(username + 'came to chat', 'user-enter');
+                printStatus(username + ' came to chat', 'user-enter');
             })
             .on('connect', function () {
                 printStatus('connection is on', 'connected');

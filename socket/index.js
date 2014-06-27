@@ -6,6 +6,7 @@ var cookie = require('cookie');   // npm i cookie
 var sessionStore = require('../lib/sessionStore');
 var HttpError = require('../error').HttpError;
 var User = require('../models/user').User;
+var sanitizer = require('sanitizer');
 
 function loadSession(sid, callback) {
 
@@ -43,8 +44,10 @@ function loadUser(session, callback) {
 }
 
 module.exports = function(server) {
-  var io = require('socket.io').listen(server);
-  io.set('origins', 'localhost:*');
+  var io = require('socket.io').listen(server),
+           origin = config.get('origin');
+           
+  io.set('origins', '' + origin.url + ':' + origin.port);
   //io.set('logger', log);
 
 io.set('authorization', function(handshake, callback) {
@@ -123,7 +126,8 @@ io.set('authorization', function(handshake, callback) {
     socket.broadcast.emit('join', username);
 
     socket.on('message', function(text, cb) {
-      socket.broadcast.emit('message', username, color, text);
+      socket.broadcast.emit('message', sanitizer.escape(username), color, sanitizer.escape(text));
+      
       cb && cb();
     });
 

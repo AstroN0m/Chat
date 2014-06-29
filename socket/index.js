@@ -126,7 +126,7 @@ io.set('authorization', function(handshake, callback) {
     socket.broadcast.emit('join', username);
 
     socket.on('message', function(text, cb) {
-      socket.broadcast.emit('message', sanitizer.escape(username), color, sanitizer.escape(text));
+      socket.broadcast.emit('message', username, color, text);
       
       cb && cb();
     });

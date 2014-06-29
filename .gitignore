@@ -1,2 +1,4 @@
 #Folders
 **/node_modules
+/.c9
+.idea/*

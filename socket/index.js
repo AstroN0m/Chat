@@ -120,11 +120,9 @@ io.set('authorization', function(handshake, callback) {
   io.sockets.on('connection', function(socket) {
       var handshake = getHandShake(socket);
       var user = getUserData(handshake.user);
-
       function getHandShake(socket) {
           return socket.manager.handshaken[socket.id];
       }
-
       function getUserData(userModel) {
           return {
               username: userModel.get('username'),

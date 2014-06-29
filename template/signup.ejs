@@ -8,14 +8,14 @@
         <label for="input-username" class="col-lg-2 control-label">Login</label>
 
         <div class="col-lg-10">
-            <input name="username" type="text" class="form-control" id="input-username" placeholder="Name">
+            <input name="username" type="text" class="form-control" id="input-username" placeholder="Name" reqired>
         </div>
     </div>
     <div class="form-group">
         <label for="input-password" class="col-lg-2 control-label">Password</label>
 
         <div class="col-lg-10">
-            <input name="password" type="password" class="form-control" id="input-password" placeholder="Password">
+            <input name="password" type="password" class="form-control" id="input-password" placeholder="Password" required>
         </div>
     </div>
     <div class="form-group">
@@ -40,7 +40,9 @@
 </form>
 
 <script>
-    $(function() {
-        Chat.initializeLogin("/signup", "You've signed up");
+    require(['jquery', 'chat'], function( $, chat ) {
+        $(function() {
+          chat.initializeLogin("/signup", "You've signed up");
+        });
     });
 </script>

@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'io', 'bootstrap'],
-    function( $, io ){
+    ['jquery', 'io', 'htmlHelper', 'bootstrap'],
+    function( $, io, htmlHelper ){
         var chat = {
     initializeLogin: function (url, successMessage) {
         $(document.forms['login-form']).on('submit', function () {
@@ -90,7 +90,7 @@ define(
 
         function printMessage (username, color, message) {
             var color = color || '#000';
-            $('<li style="color:' + color + '"><span class="nickname">' + username + ': </span>' + message + '</li>').appendTo(ul);
+            $('<li style="color:' + color + '"><span class="nickname">' + htmlHelper.encodeHtml(username) + ': </span>' + htmlHelper.encodeHtml(message) + '</li>').appendTo(ul);
         }
     }
 };

@@ -3,11 +3,27 @@
 
 <script src="/vendor/bower_components/socket.io-client/dist/socket.io.js"></script>
 
-<div id="room">
-  <ul class="list-unstyled"></ul>
-  <form>
-    <input disabled class="form-control" autocomplete="off" autofocus placeholder="Message...">
-  </form>
+<div id="room" class="room">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 messages-list-section">
+                <ul class="list-unstyled"></ul>
+            </div>
+            <div class="users-list-section">
+                <div>
+                    <p class="online-users-header">Online Users</p>
+                    <ul class="list-unstyled"></ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row message-form-wrap">
+            <form class="col-md-10">
+                <input name="message" disabled class="form-control" autocomplete="off" autofocus placeholder="Message..." maxlength="300">
+                <div class="error error-message"></div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>

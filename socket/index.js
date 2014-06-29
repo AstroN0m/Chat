@@ -115,24 +115,46 @@ io.set('authorization', function(handshake, callback) {
       });
         
     });
-
   });
 
   io.sockets.on('connection', function(socket) {
-    var user = socket.manager.handshaken[socket.id].user;
-    var username = user.get('username');
-    var color = user.get('color');
+      var handshake = getHandShake(socket);
+      var user = getUserData(handshake.user);
 
-    socket.broadcast.emit('join', username);
+      function getHandShake(socket) {
+          return socket.manager.handshaken[socket.id];
+      }
 
-    socket.on('message', function(text, cb) {
-      socket.broadcast.emit('message', sanitizer.escape(username), color, sanitizer.escape(text));
-      
-      cb && cb();
+      function getUserData(userModel) {
+          return {
+              username: userModel.get('username'),
+              color: userModel.get('color')
+          }
+      }
+
+      function getOnlineUsers() {
+          var clients = io.sockets.clients();
+          return clients.map(function(client) {
+              return getUserData(getHandShake(client).user);
+          })
+      }
+
+    var online = getOnlineUsers();
+    io.sockets.emit('join', user.username, getOnlineUsers());
+
+    socket.on('message', function(text, callback) {
+      if (text) {
+          socket.broadcast.emit('message', sanitizer.escape(user.username), user.color, sanitizer.escape(text));
+      }
+
+        callback && callback();
     });
 
     socket.on('disconnect', function() {
-      socket.broadcast.emit('leave', username);
+        var onlineUsers = getOnlineUsers();
+        onlineUsers.splice(onlineUsers.indexOf(user), 1);
+        socket.broadcast.emit('leave', user.username, onlineUsers);
+        // client don't remove from clients() after disconnect: https://github.com/Automattic/socket.io/issues/349
     });
 
   });

@@ -13,3 +13,42 @@
 .navbar-nav.navbar-right:last-child {
 	margin-right: 0px; /* why does bootstrap have -15px here?!*/
 }
+
+.room .messages-list-section {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    height: 400px;
+    overflow-x: auto;
+}
+
+.room .users-list-section {
+    height: 400px;
+    overflow-x: auto;
+}
+
+.room .users-list-section ul {
+    padding: 0 15px 15px;
+}
+
+.room .users-list-section  {
+    border: 1px solid #aaa;
+}
+
+.room .message-form-wrap {
+    margin-top: 25px;
+}
+
+.room .online-users-header {
+    background: #eee;
+    border-bottom: 1px solid #999;
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+}
+
+.error {
+    font-size: 80%;
+    font-style: italic;
+    color: #F00;
+}

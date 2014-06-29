@@ -1,36 +1,46 @@
 var Chat = {
     initializeLogin: function (url, successMessage) {
-        $(document.forms['login-form']).on('submit', function () {
-            var form = $(this);
-
-            $('.error', form).html('');
+        function submit(form) {
             $(":submit", form).button("loading");
 
             $.ajax({
                 url: url,
                 method: "POST",
                 data: form.serialize(),
-                complete: function () {
+                success: function () {
                     $(":submit", form).button("reset");
+                    form.html(successMessage).addClass('alert-success');
+                    window.location.href = "/chat";
                 },
-                statusCode: {
-                    200: function () {
-                        form.html(successMessage).addClass('alert-success');
-                        window.location.href = "/chat";
-                    },
-                    403: function (jqXHR) {
-                        var error = JSON.parse(jqXHR.responseText);
-                        $('.error', form).html(error.message);
-                    }
+
+                error: function (jqXHR) {
+                    var error = JSON.parse(jqXHR.responseText);
+                    $('.status').text(error.message).addClass(' alert alert-danger');
+                    $(":submit", form).button("reset");
                 }
             });
-            return false;
-        });
+        }
+
+        $('.login-form').validate({
+            rules: {
+                username: 'required',
+                password: 'required'
+            },
+            messages: {
+                username: 'Username is required',
+                password: 'Password is required'
+            },
+
+            submitHandler: function(form) {
+                submit($(form));
+            }
+        })
     },
 
     initializeSocket: function () {
         var input = $('#room input');
-        var ul = $('#room ul');
+        var messagesUl = $('#room .messages-list-section ul');
+        var usersUl = $('#room .users-list-section ul');
         var form = $('#room form');
 
         var socket = io.connect('', {
@@ -41,11 +51,13 @@ var Chat = {
             .on('message', function (username, color, message) {
                 printMessage(username, color, message);
             })
-            .on('leave', function (username) {
+            .on('leave', function (username, users) {
                 printStatus(username + ' left chat', 'user-left');
+                updateUsersList(users);
             })
-            .on('join', function (username) {
+            .on('join', function (username, users) {
                 printStatus(username + ' came to chat', 'user-enter');
+                updateUsersList(users);
             })
             .on('connect', function () {
                 printStatus('connection is on', 'connected');
@@ -72,22 +84,42 @@ var Chat = {
             });
 
         function sendMessage() {
-            var text = input.val();
-            socket.emit('message', text, function () {
-                printMessage("me", null, text);
-            });
+            var text = Util.htmlEncode(input.val());
+            var errorElement = $('.error-message');
 
-            input.val('');
+            if (text) {
+                errorElement.empty();
+                socket.emit('message', text, function () {
+                    printMessage("me", null, text);
+                });
+
+                input.val('');
+            } else {
+                errorElement.text('Enter a message');
+            }
+
             return false;
         }
 
         function printStatus (status, type) {
-            $('<li class="' + type + '">').append($('<i>').text(status)).appendTo(ul);
+            $('<li class="{0}"></li>'.format(type)).text(status).appendTo(messagesUl);
         }
 
         function printMessage (username, color, message) {
-            var color = color || '#000';
-            $('<li style="color:' + color + '"><span class="nickname">' + username + ': </span>' + message + '</li>').appendTo(ul);
+            var li = $('<li style="color: {0}"></li>'.format(color || '#000'));
+            li.append($('<span class="nickname"></span>').text(username + ': '));
+            li.append($('<span></span>').text(message));
+
+            li.appendTo(messagesUl);
+        }
+
+        function updateUsersList(users){
+            usersUl.empty();
+            $.each(users, function(index) {
+                var user = users[index];
+
+                $('<li style="color: {0}"></li>'.format(user.color)).text(user.username).appendTo(usersUl);
+            })
         }
     }
 };

@@ -43,7 +43,8 @@ define(
 
             initializeSocket: function () {
                 var input = $('#room input');
-                var messagesUl = $('#room .messages-list-section ul');
+                var messagesWrap = $('#room .messages-list-section');
+                var messagesUl = messagesWrap.find('ul');
                 var usersUl = $('#room .users-list-section ul');
                 var form = $('#room form');
 
@@ -105,10 +106,14 @@ define(
                     return false;
                 }
 
+                function scrollToLastMessage() {
+                    messagesWrap.scrollTop(messagesWrap[0].scrollHeight);
+                }
                 var format = $.validator.format;
 
                 function printStatus(status, type) {
                     $(format('<li class="{0}"></li>', type)).text(status).appendTo(messagesUl);
+                    scrollToLastMessage();
                 }
 
                 function printMessage(username, color, message) {
@@ -117,6 +122,7 @@ define(
                     li.append($('<span></span>').text(message));
 
                     li.appendTo(messagesUl);
+                    scrollToLastMessage();
                 }
 
                 function updateUsersList(users) {

@@ -16,14 +16,13 @@
 
 .room .messages-list-section {
     padding-top: 15px;
-    padding-bottom: 15px;
     height: 400px;
-    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .room .users-list-section {
     height: 400px;
-    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .room .users-list-section ul {

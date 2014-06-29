@@ -3,7 +3,7 @@
 
 <p>Enter Login and Password</p>
 
-<form class="form-horizontal login-form" name="login-form">
+<form class="form-horizontal login-form" method="post"  name="login-form">
   <div class="form-group">
     <label for="input-username" class="col-lg-2 control-label">Login</label>
 
@@ -27,7 +27,9 @@
 </form>
 
 <script>
-    $(function() {
-        Chat.initializeLogin("/login", "You've entered to the chat");
-    });
+require(['jquery', 'chat'], function( $, chat ) {
+        $(function() {
+          chat.initializeLogin("/login", "You've entered to the chat");
+        });
+});
 </script>

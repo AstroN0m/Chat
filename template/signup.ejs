@@ -38,7 +38,9 @@
 </form>
 
 <script>
-    $(function() {
-        Chat.initializeLogin("/signup", "You've signed up");
-    });
-</script>
+<script>
+require(['jquery', 'chat'], function( $, chat ) {
+        $(function() {
+          chat.initializeLogin("/signup", "You've signed up");
+        });
+});

@@ -1,31 +1,33 @@
 <% layout('layout/page') -%>
 <% block('title', "Chat") -%>
 
-<div id="room" class="room">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 messages-list-section">
-                <ul class="list-unstyled"></ul>
+<div ng-controller="ChatController">
+    <div id="room" class="room">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-10 messages-list-section">
+                    <ul class="list-unstyled">
+                        <li style="color: {{ message.color }}" ng-repeat="message in messages"><span class="nickname">{{ message.username }}: </span>{{ message.message }}</li>
+                    </ul>
+                </div>
+                <div class="users-list-section">
+                    <p class="online-users-header">Online Users</p>
+                    <ul class="list-unstyled">
+                        <li style="color: {{ user.color }}" ng-repeat="user in onlineUsers">{{ user.username }}</li>
+                    </ul>
+                </div>
             </div>
-            <div class="users-list-section">
-                <p class="online-users-header">Online Users</p>
-                <ul class="list-unstyled"></ul>
-            </div>
-        </div>
 
-        <div class="row message-form-wrap">
-            <form class="col-md-10">
-                <input name="message" disabled class="form-control" autocomplete="off" autofocus placeholder="Message..." maxlength="300">
-                <div class="error error-message"></div>
-            </form>
+            <div class="row message-form-wrap">
+                <form class="col-md-10">
+                    <input name="message" ng-model="message" class="form-control" autocomplete="off" autofocus
+                           placeholder="Message..." maxlength="300">
+
+                    <div class="error error-message">{{ errorMessage }}</div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
 
-<script>
-require(['jquery', 'chat'], function( $, chat ) {
-        $(function() {
-          chat.initializeSocket();
-        });
-});
-</script>
+<script src="/js/controllers/chatController.js"></script>

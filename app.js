@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser(config.get('session:secret')));
-app.use(morgan())
+app.use(morgan());
 
 var sessionStore = require('./lib/sessionStore');
 
@@ -39,7 +39,7 @@ require('./routes')(app);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(err, req, res, next) {
+/*app.use(function(err, req, res, next) {
     if (typeof err == 'number') {
         err = new HttpError(err);
     }
@@ -55,7 +55,7 @@ app.use(function(err, req, res, next) {
             res.sendHttpError(err);
         }
     }
-});
+});*/
 
 
 var server = http.createServer(app);

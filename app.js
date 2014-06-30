@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var morgan = require('morgan');
 var session = require('express-session');
 var http = require('http');
 var path = require('path');
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser(config.get('session:secret')));
+app.use(morgan())
 
 var sessionStore = require('./lib/sessionStore');
 

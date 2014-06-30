@@ -89,13 +89,13 @@ define(
                     });
 
                 function sendMessage() {
-                    var text = htmlHelper.encodeHtml(input.val());
+                    var message = input.val();
                     var errorElement = $('.error-message');
 
-                    if (text) {
+                    if (message) {
                         errorElement.empty();
-                        socket.emit('message', text, function () {
-                            printMessage("me", null, text);
+                        socket.emit('message', message, function () {
+                            printMessage("me", null, htmlHelper.encodeHtml(message));
                         });
 
                         input.val('');
@@ -118,8 +118,8 @@ define(
 
                 function printMessage(username, color, message) {
                     var li = $(format('<li style="color: {0}"></li>', color || '#000'));
-                    li.append($('<span class="nickname"></span>').text(username + ': '));
-                    li.append($('<span></span>').text(message));
+                    li.append($('<span class="nickname"></span>').html(username + ': '));
+                    li.append($('<span></span>').html(message));
 
                     li.appendTo(messagesUl);
                     scrollToLastMessage();

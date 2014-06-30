@@ -7,10 +7,20 @@
   </ul>
   <ul class="nav navbar-nav navbar-right">
     <% if (user) { %>
-    <li><a href="" onclick="$('<form method=POST action=/logout>').appendTo('body').submit();return false">Log out</a></form></li>
+    <li><a href="" id='LogOut'>Log out</a></form></li>
     <% } else { %>
         <li><a href="/login">Log in</a></li>
         <li><a href="/signup">Sign up</a></li>
     <% } %>
   </ul>
 </nav>
+<script>
+  require(['jquery'], function($)
+  {
+    $('#LogOut').on('click', function(e) {
+      e.preventDefault();
+      
+      $('<form method=POST action=/logout>').appendTo('body').submit();
+    });
+  })
+</script>

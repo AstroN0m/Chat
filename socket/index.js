@@ -7,6 +7,7 @@ var sessionStore = require('../lib/sessionStore');
 var HttpError = require('../error').HttpError;
 var User = require('../models/user').User;
 var sanitizer = require('sanitizer');
+var _ = require('lodash');
 
 function loadSession(sid, callback) {
 
@@ -120,7 +121,8 @@ io.set('authorization', function(handshake, callback) {
   io.sockets.on('connection', function(socket) {
       var handshake = getHandShake(socket);
       var user = getUserData(handshake.user);
-      function getHandShake(socket) {
+
+	  function getHandShake(socket) {
           return socket.manager.handshaken[socket.id];
       }
       function getUserData(userModel) {
@@ -131,13 +133,16 @@ io.set('authorization', function(handshake, callback) {
       }
 
       function getOnlineUsers() {
-          var clients = io.sockets.clients();
-          return clients.map(function(client) {
+          return io.sockets.clients().map(function(client) {
               return getUserData(getHandShake(client).user);
           })
       }
 
-    var online = getOnlineUsers();
+	  /*if (_.some(getOnlineUsers(), user)) {
+		  io.sockets.emit('message', user.username + ' already exists');
+		  socket.manager.onClientDisconnect(socket.id);
+	  }  */
+
     io.sockets.emit('join', user.username, getOnlineUsers());
 
     socket.on('message', function(text, callback) {

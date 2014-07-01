@@ -19,8 +19,8 @@
             </div>
 
             <div class="row message-form-wrap">
-                <form class="col-md-10">
-                    <input name="message" ng-model="message" class="form-control" autocomplete="off" autofocus
+                <form class="col-md-10" ng-submit="sendMessage()" >
+                    <input name="message" ng-disabled="disabledChat" ng-model="message" class="form-control" autocomplete="off" autofocus
                            placeholder="Message..." maxlength="300">
 
                     <div class="error error-message">{{ errorMessage }}</div>

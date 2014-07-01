@@ -138,10 +138,9 @@ io.set('authorization', function(handshake, callback) {
           })
       }
 
-	  /*if (_.some(getOnlineUsers(), user)) {
-		  io.sockets.emit('message', user.username + ' already exists');
-		  socket.manager.onClientDisconnect(socket.id);
-	  }  */
+	 /* if (_.where(getOnlineUsers(), user).length > 1) {
+          socket.disconnect();
+	  }*/
 
     io.sockets.emit('join', user.username, getOnlineUsers());
 

@@ -11,7 +11,6 @@ Chat.controller('ChatController', ['$scope', 'socket', function ($scope, socket)
 		'connected': '#0F0',
 		'disconnected': '#F00'
 	}
-	var form = $('.message-form-wrap form');
 
 	function addMessage(username, color, message) {
 		$scope.messages.push({
@@ -24,15 +23,17 @@ Chat.controller('ChatController', ['$scope', 'socket', function ($scope, socket)
 
 	function addStatus(status, text) {
 		var color = statusColors[status] || '#0F0';
-		addMessage('system', color, status);
+		addMessage('system', color, text);
 	}
 
 	function updateUsersList(users) {
 		$scope.onlineUsers = users || [];
 	}
 
-	function sendMessage() {
-		var message = $scope.message;
+	$scope.sendMessage = function() {
+        if ($scope.disabledChat) return;
+
+        var message = $scope.message;
 		if (message) {
 			$scope.errorMessage = '';
 			socket.emit('message', message, function () {
@@ -61,14 +62,16 @@ Chat.controller('ChatController', ['$scope', 'socket', function ($scope, socket)
 	socket.on('connect', function () {
 		addStatus('connected', 'connection is on');
 		$scope.disabledChat = false;
-		form.on('submit', sendMessage);
 	})
 	socket.on('disconnect', function () {
 		addStatus('disconnected', 'connection is lost');
 		$scope.disabledChat = true;
-		form.off('submit', sendMessage);
 		this.$emit('error');
 	})
+  /*  socket.on('double-connect', function () {
+        $scope.disabledChat = true;
+        $scope.errorMessage = 'You already have another instance of Chat opened';
+    })*/
 	socket.on('logout', function () {
 		location.href = "/";
 	})

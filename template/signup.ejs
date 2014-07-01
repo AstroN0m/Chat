@@ -23,10 +23,8 @@
             <label for="input-color" class="col-lg-2 control-label">Color</label>
 
             <div class="col-lg-10">
-                <select name="color" id="input-color" ng-model="userData.color" >
-                    <option value="#F00">Red</option>
-                    <option value="#0F0">Green</option>
-                    <option value="#00F">Blue</option>
+                <select name="color" id="input-color" ng-model="userData.color" style="background: {{ userData.color }}" >
+                    <option ng-repeat="color in colors" value="{{ color }}" style="background: {{ color }}; color: #000;"> {{ color }} </option>
                 </select>
             </div>
         </div>
